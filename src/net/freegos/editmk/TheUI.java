@@ -27,7 +27,6 @@ public class TheUI {
 		shell = new Shell(display);
 		shell.setText("Edit MK");
 		
-		
 		initUI();
 		
 		shell.open();
@@ -56,19 +55,18 @@ public class TheUI {
             	FileDialog dialog = new FileDialog(shell, SWT.OPEN);
             	String path = dialog.open();
                 if (path != null) {
-                    System.out.println(path);
                     t.setText(path);
-                    new File(path, "tada");
+                    MkFile theFile = new MkFile(path, "tada");
+                    t.setText(theFile.content());
                 }
             }
         });
 		
 		
-		
 		//Content
 		shell.setLayout(new FillLayout());
 		
-		t= new Text(this.shell, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		t = new Text(this.shell, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 	}
 	
 	public static void main(String[] args) {
