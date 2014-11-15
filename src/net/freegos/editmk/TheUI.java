@@ -1,7 +1,11 @@
 package net.freegos.editmk;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,6 +24,7 @@ public class TheUI {
 	private Shell shell;
 	private Menu menuBar;
 	private MenuItem fileMenuButton, openFileMenuAction;
+	private ArrayList files;
 	
 	private Text t;
 	
@@ -30,6 +35,10 @@ public class TheUI {
 		initUI();
 		
 		shell.open();
+		
+		files = new ArrayList();
+		files.add(new MkFile());
+		
 		
 		while(!shell.isDisposed()) {
 			if(!display.readAndDispatch()) {
@@ -56,8 +65,9 @@ public class TheUI {
             	String path = dialog.open();
                 if (path != null) {
                     t.setText(path);
-                    MkFile theFile = new MkFile(path, "tada");
+                    MkFile theFile = new MkFile(path);
                     t.setText(theFile.content());
+                    shell.setText(theFile.fileName() + " - Edit MK");
                 }
             }
         });
@@ -67,6 +77,13 @@ public class TheUI {
 		shell.setLayout(new FillLayout());
 		
 		t = new Text(this.shell, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		t.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				((MkFile) files.get(0)).content(t.getText());
+				
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
